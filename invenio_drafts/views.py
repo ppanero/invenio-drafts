@@ -130,7 +130,7 @@ class DraftResource(MethodView):
     @pass_record
     def post(self, record, **kwargs):
         """Create new draft for existing record from existing record."""
-        return make_response({"recid": record.get('recid'), "draft_id": 1}, 201)
+        return make_response(record, 201)
 
     @pass_record
     def get(self, record, **kwargs):
@@ -139,12 +139,12 @@ class DraftResource(MethodView):
         Note that a new version represents a new child record. Therefore,
         this returns a draft of the latest created child.
         """
-        return make_response({"recid": record.get('recid'), "draft_id": 1}, 200)
+        return make_response(record, 200)
 
     @pass_record
     def put(self, record, **kwargs):
         """Edit a record draft."""
-        return make_response({"recid": record.get('recid'), "draft_id": 1}, 200)
+        return make_response(record, 200)
 
     # @pass_record
     def delete(self, **kwargs):
@@ -168,19 +168,12 @@ class VersionsListResource(MethodView):
     @pass_record
     def post(self, record, **kwargs):
         """Create new draft (version) for new record from existing record."""
-        return make_response(
-            {"recid": record.get('recid'), "version": 2, "draft_id": 1},
-            200)
+        return make_response(record, 200)
 
     @pass_record
     def get(self, record, **kwargs):
         """Search versions of the record."""
-        return make_response(
-            { "record": [
-                {"recid": record.get('recid'), "version": 1},
-                {"recid": record.get('recid'), "version": 2, "draft_id": 1}
-            ]},
-            200)
+        return make_response(record, 200)
 
 
 class VersionResource(MethodView):
@@ -192,9 +185,8 @@ class VersionResource(MethodView):
     @pass_record
     def get(self, record, version, **kwargs):
         """Get a specific version of the record."""
-        return make_response(
-            {"recid": record.get('recid'), "version": version},
-            200)
+        record['metadata']['version'] = version
+        return make_response(record, 200)
 
 
 # Actions
