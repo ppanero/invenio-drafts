@@ -11,6 +11,9 @@ from flask import Blueprint, render_template, make_response
 from flask.views import MethodView
 from flask_babelex import gettext as _
 from functools import wraps
+from invenio_rdm_records.cli import create_fake_record
+
+from .demo import create_fake_record, create_fake_record_list
 
 
 def pass_record(f):
@@ -22,7 +25,7 @@ def pass_record(f):
     @wraps(f)
     def inner(self, pid_value, *args, **kwargs):
         try:
-            record = {"recid": pid_value}
+            record = create_fake_record(rec_uuid=pid_value)
             return f(self, record=record, *args, **kwargs)
 
         except SQLAlchemyError:
@@ -78,13 +81,11 @@ class RecordsListResource(MethodView):
 
     def post(self, **kwargs):
         """Create new draft for new record from nothing."""
-        return make_response({"recid": 100}, 201)
+        return make_response(create_fake_record(), 201)
 
     def get(self, **kwargs):
         """Search (published) records."""
-        return make_response(
-            {"records": [{"recid": 100}, {"recid": 101}]},
-            200)
+        return make_response(create_fake_record_list(), 200)
 
 
 class RecordResource(MethodView):
@@ -96,7 +97,7 @@ class RecordResource(MethodView):
     @pass_record
     def get(self, record, **kwargs):
         """Get a record."""
-        return make_response({"recid": record.get('recid')}, 200)
+        return make_response(record, 200)
 
     @pass_record
     def delete(self, record, **kwargs):
@@ -113,8 +114,7 @@ class RecordsDraftsMixResource(MethodView):
     def get(self, **kwargs):
         """Search and display mix of records and drafts."""
 
-        return make_response({"records": [{"recid": 100}, {"recid": 101, "draft_id": 1}]},
-            200)
+        return make_response(create_fake_record_list(), 200)
 
 
 # Drafts

@@ -42,6 +42,8 @@ setup_requires = [
 
 install_requires = [
     'Flask-BabelEx>=0.9.4',
+    # TODO: remove dependency when data is not mocked anymore
+    'invenio-rdm-records>=0.10.1'
 ]
 
 packages = find_packages()
