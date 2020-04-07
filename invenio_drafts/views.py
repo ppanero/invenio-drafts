@@ -17,6 +17,8 @@ from .demo import (
     create_fake_record,
     create_fake_record_list,
     create_fake_new_record,
+    create_fake_file,
+    create_fake_files_list,
 )
 
 
@@ -252,7 +254,7 @@ class FilesListResource(MethodView):
     @pass_record
     def get(self, record, **kwargs):
         """Get files of the record."""
-        pass
+        return make_response(create_fake_files_list(), 200)
 
     @pass_record
     def delete(self, record, **kwargs):
@@ -282,17 +284,17 @@ class FileResource(MethodView):
     @pass_record
     def get(self, record, file, **kwargs):
         """Get a specific file of the record."""
-        pass
+        return make_response(create_fake_file(), 200)
 
     @pass_record
     def put(self, record, file, **kwargs):
         """Upload a file to the record."""
-        pass
+        return make_response(create_fake_file(), 200)
 
     @pass_record
     def delete(self, record, file, **kwargs):
         """Delete a file from the record."""
-        pass
+        return make_response("Accepted", 202)
 
 
 class RecordFileResource(FileResource):

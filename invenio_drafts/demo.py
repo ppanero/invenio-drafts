@@ -124,7 +124,11 @@ def create_fake_record(rec_uuid=None):
         ],
         "publication_date": fake_edtf_level_0(),
         "subjects": [
-            {"subject": "Romans", "identifier": "subj-1", "scheme": "no-scheme"}
+            {
+                "subject": "Romans",
+                "identifier": "subj-1",
+                "scheme": "no-scheme",
+            }
         ],
         "contributors": [
             {
@@ -227,4 +231,46 @@ def create_fake_record_list():
         "links": {
             "self": "https://localhost:5000/api/experimental/records/?sort=mostrecent&size=10&page=1"
         },
+    }
+
+
+def create_fake_file():
+    """Create a fake file meta."""
+
+    return {
+        "version_id": "370cba0b-4b7d-4e56-916f-f8f9606e8f09",
+        "key": "snow_doge.jpg",
+        "delete_marker": False,
+        "updated": "2020-04-07T13:37:42.898265",
+        "created": "2020-04-07T13:37:42.893365",
+        "is_head": True,
+        "checksum": "md5:3a695fc209fb948cd70fd710f92d1ae0",
+        "mimetype": "image/jpeg",
+        "links": {
+            "self": "https://localhost:5000/api/records/tbwnh-dyw64/files/snow_doge.jpg",
+            "version": "https://localhost:5000/api/records/tbwnh-dyw64/files/snow_doge.jpg?versionId=370cba0b-4b7d-4e56-916f-f8f9606e8f09",
+            "uploads": "https://localhost:5000/api/records/tbwnh-dyw64/files/snow_doge.jpg?uploads",
+        },
+        "size": 133012,
+        "tags": {},
+    }
+
+
+def create_fake_files_list():
+    """Create a fake list of files."""
+
+    return {
+        "contents": [create_fake_file(), create_fake_file()],
+        "id": "55cb796b-5ffa-4c1f-943f-0b1731013e8e",
+        "max_file_size": None,
+        "updated": "2020-04-07T13:37:42.904294",
+        "quota_size": None,
+        "created": "2020-04-06T15:24:12.387537",
+        "locked": False,
+        "links": {
+            "self": "https://localhost:5000/api/records/tbwnh-dyw64/files",
+            "versions": "https://localhost:5000/api/records/tbwnh-dyw64/files?versions",
+            "uploads": "https://localhost:5000/api/records/tbwnh-dyw64/files?uploads",
+        },
+        "size": 266024,
     }

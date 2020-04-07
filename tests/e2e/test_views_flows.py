@@ -29,6 +29,12 @@ def test_create_record(base_client):
 
     # TODO: Add case where validation fails
 
+    # TODO: Upload a file through Invenio
+    draft_file = base_client.put(
+        "/experimental/records/{}/drafts/files/test.jpg".format(rec_uuid)
+    )
+    draft_file.status_code = 200
+
     # Publish record
     action = base_client.post(
         "/experimental/records/{}/drafts/actions/publish".format(rec_uuid)
@@ -162,3 +168,4 @@ def test_delete_record(base_client):
 
 # TODO: Test case for delete non-published draft
 # TODO: Test case for delete published records' draft
+# TODO: Test case with external upload of files
