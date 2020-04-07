@@ -6,7 +6,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 
-""" TODO: Remove when data is not mocked."""
+"""TODO: Remove when data is not mocked."""
 
 
 import datetime
@@ -20,19 +20,17 @@ from invenio_rdm_records.vocabularies import Vocabulary
 
 def fake_resource_type():
     """Generates a fake resource_type."""
-    vocabulary = Vocabulary.get_vocabulary('resource_types')
+    vocabulary = Vocabulary.get_vocabulary("resource_types")
     _type, subtype = random.choice(list(vocabulary.data.keys()))
-    return {
-        "type": _type,
-        "subtype": subtype
-    }
+    return {"type": _type, "subtype": subtype}
 
 
 def fake_edtf_level_0():
     """Generates a fake publication_date string."""
+
     def fake_date(end_date=None):
         fake = Faker()
-        date_pattern = ['%Y', '%m', '%d']
+        date_pattern = ["%Y", "%m", "%d"]
         # make it less and less likely to get less and less parts of the date
 
         if random.choice([True, False]):
@@ -59,108 +57,140 @@ def fake_edtf_level_0():
     return f_date
 
 
+def create_fake_new_record():
+    """Generates a fake new record."""
+    id = uuid.uuid4()
+    return {
+        "created": "2020-04-06T15:24:12.396419+00:00",
+        "id": id,
+        "links": {
+            "files": "https://localhost:5000/api/experimental/records/{}/files".format(
+                id
+            ),
+            "self": "https://localhost:5000/api/experimental/records/{}".format(
+                id
+            ),
+        },
+        "revision": 0,
+        "updated": "2020-04-06T15:24:12.396424+00:00",
+        "metadata": {},
+    }
+
+
 def create_fake_record(rec_uuid=None):
-    """Create records for demo purposes."""
+    """Create full record."""
     fake = Faker()
     data_to_use = {
-        "_access": {
-            "metadata_restricted": False,
-            "files_restricted": False
-        },
+        "_access": {"metadata_restricted": False, "files_restricted": False},
         "_created_by": 2,
         "_default_preview": "previewer one",
-        "_internal_notes": [{
-            "user": "inveniouser",
-            "note": "RDM record",
-            "timestamp": fake.iso8601(tzinfo=None, end_datetime=None),
-        }],
+        "_internal_notes": [
+            {
+                "user": "inveniouser",
+                "note": "RDM record",
+                "timestamp": fake.iso8601(tzinfo=None, end_datetime=None),
+            }
+        ],
         "_owners": [1],
         "access_right": "open",
         "embargo_date": fake.iso8601(tzinfo=None, end_datetime=None),
         "contact": "info@inveniosoftware.org",
         "community": {
             "primary": "Maincom",
-            "secondary": ["Subcom One", "Subcom Two"]
+            "secondary": ["Subcom One", "Subcom Two"],
         },
         "resource_type": fake_resource_type(),
-        "identifiers": {
-            "DOI": "10.9999/rdm.9999999",
-            "arXiv": "9999.99999",
-        },
-        "creators": [{
-            "name": fake.name(),
-            "type": "Personal",
-            "identifiers": {
-                "Orcid": "9999-9999-9999-9999",
-            },
-            "affiliations": [{
-                "name": fake.company(),
-                "identifier": "entity-one",
-                "scheme": "entity-id-scheme"
-            }]
-        }],
-        "titles": [{
-            "title": fake.company() + "'s gallery",
-            "type": "Other",
-            "lang": "eng"
-        }],
+        "identifiers": {"DOI": "10.9999/rdm.9999999", "arXiv": "9999.99999",},
+        "creators": [
+            {
+                "name": fake.name(),
+                "type": "Personal",
+                "identifiers": {"Orcid": "9999-9999-9999-9999",},
+                "affiliations": [
+                    {
+                        "name": fake.company(),
+                        "identifier": "entity-one",
+                        "scheme": "entity-id-scheme",
+                    }
+                ],
+            }
+        ],
+        "titles": [
+            {
+                "title": fake.company() + "'s gallery",
+                "type": "Other",
+                "lang": "eng",
+            }
+        ],
         "publication_date": fake_edtf_level_0(),
-        "subjects": [{
-            "subject": "Romans",
-            "identifier": "subj-1",
-            "scheme": "no-scheme"
-        }],
-        "contributors": [{
-            "name": fake.name(),
-            "type": "Personal",
-            "identifiers": {
-                "Orcid": "9999-9999-9999-9998",
-            },
-            "affiliations": [{
-                "name": fake.company(),
-                "identifier": "entity-one",
-                "scheme": "entity-id-scheme"
-            }],
-            "role": "RightsHolder"
-        }],
-        "dates": [{
-            # No end date to avoid computations based on start
-            "start": fake.iso8601(tzinfo=None, end_datetime=None),
-            "description": "Random test date",
-            "type": "Other"
-        }],
+        "subjects": [
+            {"subject": "Romans", "identifier": "subj-1", "scheme": "no-scheme"}
+        ],
+        "contributors": [
+            {
+                "name": fake.name(),
+                "type": "Personal",
+                "identifiers": {"Orcid": "9999-9999-9999-9998",},
+                "affiliations": [
+                    {
+                        "name": fake.company(),
+                        "identifier": "entity-one",
+                        "scheme": "entity-id-scheme",
+                    }
+                ],
+                "role": "RightsHolder",
+            }
+        ],
+        "dates": [
+            {
+                # No end date to avoid computations based on start
+                "start": fake.iso8601(tzinfo=None, end_datetime=None),
+                "description": "Random test date",
+                "type": "Other",
+            }
+        ],
         "language": "eng",
-        "related_identifiers": [{
-            "identifier": "10.9999/rdm.9999988",
-            "scheme": "DOI",
-            "relation_type": "Requires",
-            "resource_type": fake_resource_type()
-        }],
+        "related_identifiers": [
+            {
+                "identifier": "10.9999/rdm.9999988",
+                "scheme": "DOI",
+                "relation_type": "Requires",
+                "resource_type": fake_resource_type(),
+            }
+        ],
         "version": "v0.0.1",
-        "licenses": [{
-            "license": "Berkeley Software Distribution 3",
-            "uri": "https://opensource.org/licenses/BSD-3-Clause",
-            "identifier": "BSD-3",
-            "scheme": "BSD-3",
-        }],
-        "descriptions": [{
-            "description": fake.text(max_nb_chars=3000),
-            "type": "Abstract",
-            "lang": "eng"
-        }],
-        "locations": [{
-            "point": {
-                "lat": str(fake.latitude()),
-                "lon": str(fake.longitude())
-            },
-            "place": fake.location_on_land()[2],
-            "description": "Random place on land for random coordinates..."
-        }],
-        "references": [{
-            "reference_string": "Reference to something et al.",
-            "identifier": "9999.99988",
-            "scheme": "GRID"
-        }]
+        "licenses": [
+            {
+                "license": "Berkeley Software Distribution 3",
+                "uri": "https://opensource.org/licenses/BSD-3-Clause",
+                "identifier": "BSD-3",
+                "scheme": "BSD-3",
+            }
+        ],
+        "descriptions": [
+            {
+                "description": fake.text(max_nb_chars=3000),
+                "type": "Abstract",
+                "lang": "eng",
+            }
+        ],
+        "locations": [
+            {
+                "point": {
+                    "lat": str(fake.latitude()),
+                    "lon": str(fake.longitude()),
+                },
+                "place": fake.location_on_land()[2],
+                "description": "Random place on land for random coordinates...",
+            }
+        ],
+        "references": [
+            {
+                "reference_string": "Reference to something et al.",
+                "identifier": "9999.99988",
+                "scheme": "GRID",
+            }
+        ],
     }
 
     # Create and index record
@@ -170,35 +200,31 @@ def create_fake_record(rec_uuid=None):
         "created": "2020-04-06T15:24:12.396419+00:00",
         "id": id,
         "links": {
-            "files": "https://localhost:5000/api/experimental/records/{}}/files".format(id),
-            "self": "https://localhost:5000/api/experimental/records/{}".format(id)
+            "files": "https://localhost:5000/api/experimental/records/{}/files".format(
+                id
+            ),
+            "self": "https://localhost:5000/api/experimental/records/{}".format(
+                id
+            ),
         },
         "revision": 0,
-        "updated": "2020-04-06T15:24:12.396424+00:00"
-        "metadata": data_to_use
+        "updated": "2020-04-06T15:24:12.396424+00:00",
+        "metadata": data_to_use,
     }
 
+
 def create_fake_record_list():
+    """Generates a fake records list."""
     return {
         "aggregations": {
             "access_right": {
-                "buckets": [
-                    {
-                    "doc_count": 10,
-                    "key": "open"
-                    }
-                ],
+                "buckets": [{"doc_count": 10, "key": "open"}],
                 "doc_count_error_upper_bound": 0,
-                "sum_other_doc_count": 0
+                "sum_other_doc_count": 0,
             }
         },
-        "hits": {
-            "hits": [
-                create_fake_record(),
-                create_fake_record()
-            ]
-        }
+        "hits": {"hits": [create_fake_record(), create_fake_record()]},
         "links": {
             "self": "https://localhost:5000/api/experimental/records/?sort=mostrecent&size=10&page=1"
-        }
+        },
     }

@@ -19,10 +19,10 @@ from flask import Flask
 from flask_babelex import Babel
 
 from invenio_drafts import InvenioDrafts
-from invenio_drafts.views import blueprint
+from invenio_drafts.views import create_blueprint
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def celery_config():
     """Override pytest-invenio fixture.
 
@@ -31,14 +31,16 @@ def celery_config():
     return {}
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def create_app(instance_path):
     """Application factory fixture."""
+
     def factory(**config):
-        app = Flask('testapp', instance_path=instance_path)
+        app = Flask("testapp", instance_path=instance_path)
         app.config.update(**config)
         Babel(app)
         InvenioDrafts(app)
-        app.register_blueprint(blueprint)
+        app.register_blueprint(create_blueprint(app))
         return app
+
     return factory
